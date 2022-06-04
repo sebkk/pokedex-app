@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react'
+import { useRoutes } from 'react-router-dom'
+import { routes } from './routes'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+	const content = useRoutes(routes)
+	const [pokemons, setPokemons] = useState(null)
+
+	useEffect(() => {
+		fetch(`https://pokeapi.co/api/v2/pokemon/?limit=151`)
+			.then(response => response.json())
+			.then(data => setPokemons(data.results))
+			.catch(err => console.error(err))
+
+		// console.log(pokemons)
+	}, [])
+
+	console.log(pokemons)
+
+	return <div>{content}</div>
 }
 
-export default App;
+export default App
